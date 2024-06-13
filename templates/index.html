@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SENSOR CAHAYA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .sensor-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 30px;
+        }
+        .sub-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 0px;
+            float: left;
+            
+        }
+        .sensor-value {
+            font-size: 2em;
+            color: #333;
+        }
+        .title {
+            font-size: 1.5em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        function fetchSensorData() {
+            fetch('/sensor')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('ultra-value').innerText = data.sensor.ultrasonik.value;
+                    })
+                .catch(error => console.error('Error fetching sensor data:', error));
+        }
+
+        // Fetch data every 1 second
+        setInterval(fetchSensorData, 1000);
+
+        // Initial fetch to populate data as soon as the page loads
+        window.onload = fetchSensorData;
+    </script>
+</head>
+<body>
+    <div class="sensor-container">
+        <div class="title">Sensor Ultrasonik</div>
+        <div class="sensor-value" id="ultra-value"></div><div class="sensor-value" >cm</div>
+    </div>
+
+
+</body>
+</html>
