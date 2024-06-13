@@ -97,9 +97,9 @@ from flask import Flask, request, render_template, jsonify
 
 app = Flask(__name__)
 
-valsen = {
+ultra = {
     "sensor":{
-        "light":{
+        "ultrasonik":{
             "value":0
         }
     }
@@ -109,11 +109,11 @@ valsen = {
 def send_sensor():
     if request.method == "POST":
         tipe = request.form.get("type")
-        if tipe == "light":
-            valsen["sensor"]["light"]["value"] = int(request.form.get("value"))
-        return jsonify(valsen)
+        if tipe == "ultrasonik":
+            ultra["sensor"]["ultrasonik"]["value"] = int(request.form.get("value"))
+        return jsonify(ultra)
     else:
-        return jsonify(valsen)
+        return jsonify(ultra)
     
 
 @app.route('/', methods=["GET"])
@@ -125,13 +125,3 @@ if __name__ == '__main__':
 ```
 Atau bisa lihat pada link berikut : <br>
 [myserver.py](myserver.py)
-
-# Video Praktik
-<video controls>
-  <source src="video/Evideo.mp4" type="video/mp4"/>
-</video>
-Anda dapat men-download video demo di bawah ini
-
-[video/video.mp4](video/video.mp4)
-
-
