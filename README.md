@@ -28,16 +28,20 @@ Asal : MAN 2 Jakarta<br>
 #include <HTTPClient.h>
 
 // Ganti dengan SSID dan Password WiFi Anda
-const char* ssid = "Infinix NOTE 30";
-const char* password = "irshadfaqih";
+const char* ssid = "MAN 2 Jakarta";
+const char* password = "alhamdulillah123";
+
+int trig = 13;
+int echo = 12;
 
 // Ganti dengan URL server Flask Anda
-const char* serverName = "http://192.168.35.68:5000/sensor";
+const char* serverName = "http://192.168.9.63:5000/sensor";
 
 
 void setup() {
   Serial.begin(115200);
-  pinMode(34, INPUT); // Pin sensor cahaya
+  pinMode(trig, OUTPUT); // Pin sensor Trig
+  pinMode(echo, INPUT); // Pin sensor echo
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
@@ -49,16 +53,22 @@ void setup() {
 }
 
 void loop() {
-    int sensorValue = analogRead(34);
-    int newval = map(sensorValue,4095,0,0,100);
-    Serial.println(newval);delay(100);
+    digitalWrite(trig, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trig, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trig, LOW);
 
+    long duration = pulseIn(echo, HIGH);
+    long distance = duration * 0.034 / 2;
+
+    Serial.println(distance);
     if (WiFi.status() == WL_CONNECTED) {
       HTTPClient http;
       http.begin(serverName);
       http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
-      String httpRequestData = "type=light&value=" + String(newval);
+      String httpRequestData = "type=ultrasonik&value=" + String(distance);
       int httpResponseCode = http.POST(httpRequestData);
 
       if (httpResponseCode > 0) {
